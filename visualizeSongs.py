@@ -1,34 +1,37 @@
-# Author of scraping: ryanleewatts
+# Author of original setlistfm scraping: ryanleewatts
 # Github: https://github.com/ryanleewatts
-# script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/SetlistScript.py
+# Original script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/SetlistScript.py
 #
 # example usage: visualizeSongs.py 
 #
-# modified by Alex Danilowicz to scrape any band and at stopping url
+# Heavily modified by Alex Danilowicz to scrape any band
 # also modified to get album
-# also added all pandas code to make pretty graph with matplotlib
+# And author of all pandas code to make pretty graph with matplotlib
 
 from bs4 import BeautifulSoup as bs
 import requests
 import pandas as pd
-from pathlib import Path # optional, only if you don't want to scrape everytime you mess around with graph
-import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
+import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 import random
+from collections import defaultdict
+from pathlib import Path # optional, only if you don't want to scrape everytime you mess around with graph
 
 # THINGS YOU MUST CHANGE
-ARTIST = "Interpol"
-UNIQUE = "interpol-2bd6982e.html"
-URL_TO_STOP_AT = "interpol/2018/sexto-nplugged-sesto-al-reghena-italy" # Note: get rid of HTTPS part
+ARTIST = "Radiohead"
+UNIQUE = "radiohead-bd6bd12.html"
+URL_TO_STOP_AT = "setlist/radiohead/2018/united-center-chicago-il-7bea6a40.html" # Note: get rid of HTTPS part
+URL_TO_START_AT = "" # this url will be the first one to be scraped, if put in
 
 # OPTIONAL THINGS TO CHANGE
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data.xlsx" # filename
+OPTIONAL_TITLE_ADDITIONAL
 TITLE = "Frequency of Songs during " + ARTIST + "'s Tour"
-SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"]
-MAX_PAGES = 100 # max to scrape, breaks if URL_TO_TOP set properly
+SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"] 
+MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_TOP set properly
 
 def scrape():
 	UNIQUE_URL = "https://www.setlist.fm/setlists/" + UNIQUE + "?page="
@@ -39,6 +42,7 @@ def scrape():
 	my_file = Path("./" + FILE) 
 	if not my_file.is_file(): # only do scraping if file doesn't exist already
 		break_bool = False
+		start = False
 		for i in range(MAX_PAGES):
 			if break_bool:
 				break
@@ -48,8 +52,11 @@ def scrape():
 			for link in soup.find_all('a', class_='summary url'):
 				setlist = (link.get('href'))
 				completeurl = 'http://www.setlists.fm' + setlist[2:]
-				print("Getting url: " + completeurl) # pint the output
-				links.append(completeurl)
+				if URL_TO_START_AT in completeurl:
+					start = True
+				if start:
+					print("Getting url: " + completeurl) # print the output
+					links.append(completeurl)
 				# stop at this url
 				if URL_TO_STOP_AT in completeurl:
 					break_bool = True
@@ -189,7 +196,9 @@ def sorting(date):
 def return_color_album_dict(albums_list):
 	color_album_dict = {}
 
+
 	# HERE YOU CAN SPECIFY ALBUM COLORS SO THEY FIT YOUR ARTIST's ALBUM ARTWORK
+	# Make sure you catch everything, or it will not map properly
 	if ARTIST == "Radiohead":
 		color_album_dict["Pablo Honey"] = '#E8E288' # yellow
 		color_album_dict["The Bends"] = '#C69F89' #brown 
@@ -200,7 +209,8 @@ def return_color_album_dict(albums_list):
 		color_album_dict["In Rainbows"] = '#D72638' #dark red
 		color_album_dict["The King of Limbs"] = '#A23B72' # purplish
 		color_album_dict["A Moon Shaped Pool"] = '#2B303A' # blackish
-		color_album_dict["Spectre"] = '#BAC1B8' #white
+		color_album_dict["Spectre"] = '#BAC1B8' # white
+
 	else: # otherwise, just get random ugly hex colors
 		number_of_colors = len(albums_list)
 		random_hex_list = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
