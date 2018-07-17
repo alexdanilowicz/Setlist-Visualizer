@@ -28,10 +28,13 @@ URL_TO_START_AT = "" # this url will be the first one to be scraped, if put in
 # OPTIONAL THINGS TO CHANGE
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data.xlsx" # filename
-OPTIONAL_TITLE_ADDITIONAL
 TITLE = "Frequency of Songs during " + ARTIST + "'s Tour"
 SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"] 
 MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_TOP set properly
+FONT_SIZE_TICKS = 5
+FONT_Y = 6
+OPTIONAL_TITLE_ADDITIONAL = ", North America 2018"
+TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
 
 def scrape():
 	UNIQUE_URL = "https://www.setlist.fm/setlists/" + UNIQUE + "?page="
@@ -178,11 +181,11 @@ def format(ax, color_dict, total, df):
 	ax.xaxis.set_major_formatter(xticks)
 
 	ax.set_ylabel("Track (Count: " + str(len(df.index)) + ")")
-	plt.yticks(fontsize=6)
+	plt.yticks(fontsize=FONT_Y)
 	plt.title(TITLE, fontsize=10)
 
 	for i in ax.patches:
-		ax.text(i.get_width()+.3, i.get_y()+.38, str(round((i.get_width()*total/100), 1)).replace(".0", ""), fontsize=5, color='dimgrey')
+		ax.text(i.get_width()+.3, i.get_y()+.38, str(round((i.get_width()*total/100), 1)).replace(".0", ""), fontsize=FONT_SIZE_TICKS, color='dimgrey')
 
 	ax.invert_yaxis() 
 	plt.tight_layout()
@@ -195,7 +198,6 @@ def sorting(date):
 
 def return_color_album_dict(albums_list):
 	color_album_dict = {}
-
 
 	# HERE YOU CAN SPECIFY ALBUM COLORS SO THEY FIT YOUR ARTIST's ALBUM ARTWORK
 	# Make sure you catch everything, or it will not map properly
