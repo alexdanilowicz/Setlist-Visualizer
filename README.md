@@ -12,7 +12,9 @@ Could be applied to any band, tour/year, just need to mess around with 3 constan
 
 ### Choose your band:
 
-At top of script, simply change:
+Originally, used to scrape Radiohead data (because they are the greatest band of all time). Now, script can be used for any band.
+
+At the top of the script, simply change:
 
 1. ARTIST
 	- this is used for titles
