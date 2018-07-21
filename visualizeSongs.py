@@ -35,6 +35,7 @@ FONT_SIZE_TICKS = 5
 FONT_Y = 6
 OPTIONAL_TITLE_ADDITIONAL = ", North America 2018"
 TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
+color_album_dict = {}
 
 def scrape():
 	UNIQUE_URL = "https://www.setlist.fm/setlists/" + UNIQUE + "?page="
@@ -103,6 +104,9 @@ def scrape():
 							thealbum = thealbum.replace("(Single)", "")
 							thealbum = thealbum.strip("'")
 							thealbum = thealbum.rstrip()
+							# harcoded but you could just see if the key is in th
+							if thealbum not in returnRadioheadAlbumDict(color_album_dict):
+								thealbum = "Other"
 							visited[str(song)] = thealbum
 							break
 						if album.text == "From the release": # album name falls under this span
@@ -202,16 +206,7 @@ def return_color_album_dict(albums_list):
 	# HERE YOU CAN SPECIFY ALBUM COLORS SO THEY FIT YOUR ARTIST's ALBUM ARTWORK
 	# Make sure you catch everything, or it will not map properly
 	if ARTIST == "Radiohead":
-		color_album_dict["Pablo Honey"] = '#E8E288' # yellow
-		color_album_dict["The Bends"] = '#C69F89' #brown 
-		color_album_dict["Amnesiac"] = '#FF8360' #oragnish 
-		color_album_dict["OK Computer"] = '#58A4B0' #bluish
-		color_album_dict["Kid A"] = '#93032E' # light red
-		color_album_dict["Hail to the Thief"] = '#0C7C59' # green
-		color_album_dict["In Rainbows"] = '#D72638' #dark red
-		color_album_dict["The King of Limbs"] = '#A23B72' # purplish
-		color_album_dict["A Moon Shaped Pool"] = '#2B303A' # blackish
-		color_album_dict["Spectre"] = '#BAC1B8' # white
+		color_album_dict = returnRadioheadAlbumDict(color_album_dict)
 
 	else: # otherwise, just get random ugly hex colors
 		number_of_colors = len(albums_list)
@@ -223,6 +218,19 @@ def return_color_album_dict(albums_list):
 			color_album_dict[album] = str(random_hex_list[i])
 			i += 1
 
+	return color_album_dict
+
+def returnRadioheadAlbumDict(color_album_dict):
+	color_album_dict["Pablo Honey"] = '#E8E288' # yellow
+	color_album_dict["The Bends"] = '#C69F89' #brown 
+	color_album_dict["Amnesiac"] = '#FF8360' #oragnish 
+	color_album_dict["OK Computer"] = '#58A4B0' #bluish
+	color_album_dict["Kid A"] = '#93032E' # light red
+	color_album_dict["Hail to the Thief"] = '#0C7C59' # green
+	color_album_dict["In Rainbows"] = '#D72638' #dark red
+	color_album_dict["The King of Limbs"] = '#A23B72' # purplish
+	color_album_dict["A Moon Shaped Pool"] = '#2B303A' # blackish
+	color_album_dict["Other"] = '#BAC1B8' # white
 	return color_album_dict
 
 if __name__ == "__main__":
