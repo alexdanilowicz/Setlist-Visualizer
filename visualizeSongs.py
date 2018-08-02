@@ -22,18 +22,19 @@ from pathlib import Path # optional, only if you don't want to scrape everytime 
 # THINGS YOU MUST CHANGE
 ARTIST = "Radiohead"
 UNIQUE = "radiohead-bd6bd12.html"
-URL_TO_STOP_AT = "setlist/radiohead/2018/united-center-chicago-il-7bea6a40.html" # Note: get rid of HTTPS part
-URL_TO_START_AT = "" # this url will be the first one to be scraped, if put in
+URL_TO_STOP_AT = "united-center-chicago-il-7bea6a40.html" # Note: get rid of HTTPS part
+URL_TO_START_AT = "html" # this url will be the first one to be scraped, if put in
 
 # OPTIONAL THINGS TO CHANGE
+YEAR = "2018"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
-FILE = ARTIST + "-Data.xlsx" # filename
+FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
 TITLE = "Frequency of Songs during " + ARTIST + "'s Tour"
 SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"] 
 MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_TOP set properly
 FONT_SIZE_TICKS = 5
-FONT_Y = 6
-OPTIONAL_TITLE_ADDITIONAL = ", North America 2018"
+FONT_Y = 5 # for labels
+OPTIONAL_TITLE_ADDITIONAL = ", North America " + YEAR 
 TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
 color_album_dict = {}
 
@@ -170,7 +171,7 @@ def visualize_album():
 
 	format(ax, color_album_dict, total, unique_df)
 
-	plt.savefig("./Visual-" + ARTIST + ORDERCOUNT + ".png", format='png', dpi=1200)
+	plt.savefig("./Visual-" + ARTIST + ORDERCOUNT + YEAR + ".png", format='png', dpi=1200)
 	plt.show()
 
 def format(ax, color_dict, total, df):
