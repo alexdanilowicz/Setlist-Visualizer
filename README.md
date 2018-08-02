@@ -4,7 +4,7 @@ Python script which scrapes setlistfm website for data relating to any band you 
 
 Could be applied to any band, tour/year, just need to mess around with 3 constants at top of script.
 
-![graph](./img/example.png)
+![graph](./img/example.jpeg)
 
 ### Run:
 
