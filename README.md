@@ -2,7 +2,7 @@
 
 Python script which scrapes setlistfm website for data relating to any band you specify. Then, using pandas and matplotlib, it turns it the frequency of the songs they play into a pretty graph.
 
-Could be applied to any band, tour/year, just need to mess around with 3 constants at top of script.
+Could be applied to any band, tour/year, just need to change 3 constants at top of script.
 
 ![graph](./img/example.jpeg)
 
