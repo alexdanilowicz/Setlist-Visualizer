@@ -2,11 +2,13 @@
 # Github: https://github.com/ryanleewatts
 # Original script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/SetlistScript.py
 #
-# example usage: visualizeSongs.py 
+# Example Usage:
+#	python3 visualizeSongs.py
 #
-# Heavily modified by Alex Danilowicz to scrape any band
-# also modified to get album
-# And author of all pandas code to make pretty graph with matplotlib
+# Author: Alex Danilowicz
+# 	Wrote for fun as a summer personal project.
+#	Need to clean up, rename, and refactor.
+#	Started as just a way to see what Radiohead songs would be played...
 
 from bs4 import BeautifulSoup as bs
 import requests
@@ -23,18 +25,18 @@ from pathlib import Path # optional, only if you don't want to scrape everytime 
 ARTIST = "Radiohead"
 UNIQUE = "radiohead-bd6bd12.html"
 URL_TO_STOP_AT = "united-center-chicago-il-7bea6a40.html" # Note: get rid of HTTPS part
-URL_TO_START_AT = "html" # this url will be the first one to be scraped, if put in
+URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing
 
 # OPTIONAL THINGS TO CHANGE
 YEAR = "2018"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
 TITLE = "Frequency of Songs during " + ARTIST + "'s Tour"
-SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"] 
-MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_TOP set properly
+SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"]
+MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_STOP set properly
 FONT_SIZE_TICKS = 3
 FONT_Y = 5 # for labels
-OPTIONAL_TITLE_ADDITIONAL = ", North America " + YEAR 
+OPTIONAL_TITLE_ADDITIONAL = ", North America " + YEAR
 TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
 color_album_dict = {}
 
@@ -44,7 +46,7 @@ def scrape():
 	visited = {} # key song, album is value
 	links = []
 	dm = []
-	my_file = Path("./" + FILE) 
+	my_file = Path("./" + FILE)
 	if not my_file.is_file(): # only do scraping if file doesn't exist already
 		break_bool = False
 		start = False
@@ -84,7 +86,7 @@ def scrape():
 				# hardcoded these, cause too lazy to put into list
 				# skip the intro/outro songs that are always there
 				thesong = songstext.encode('utf-8').rstrip().strip().decode("utf-8")
-				if thesong not in SONGS_TO_IGNORE: 
+				if thesong not in SONGS_TO_IGNORE:
 					songs.append(thesong)
 
 			#3. Scrape the album
@@ -96,7 +98,7 @@ def scrape():
 					else:
 						r = requests.get(SONG_URL + song)
 					soup = bs(r.content, "lxml")
-					
+
 					thenext = False
 					for album in soup.find_all('span'):
 						if thenext:
@@ -118,7 +120,7 @@ def scrape():
 				try:
 					dm.append([date, song, thealbum])
 				except:
-					print("skipping over this song because not setlist data populated yet")
+					print("skipping over this song because setlist data populated yet")
 
 		df = pd.DataFrame(dm, columns=['Date', 'Track', 'Album'])
 
@@ -147,7 +149,7 @@ def create_clean_df():
 	albums = albums.set_index('Track')
 	albums = albums[~albums.index.duplicated(keep='first')]
 	unique_df = pd.merge(unique_df, albums, left_index=True, right_index=True)
-	
+
 	return (total, unique_df)
 
 def visualize_album():
@@ -160,7 +162,7 @@ def visualize_album():
 	if SORT_ALBUM: # sort by album, then count
 		unique_df = unique_df.sort_values(['Album', 'Count_Played'], ascending=True)
 		ORDERCOUNT = ""
-	else: 
+	else:
 		ORDERCOUNT = "-OrderedByCount"
 		unique_df = unique_df.sort_values(['Count_Played', 'Album'], ascending=True)
 
@@ -192,7 +194,7 @@ def format(ax, color_dict, total, df):
 	for i in ax.patches:
 		ax.text(i.get_width()+.3, i.get_y()+.38, str(round((i.get_width()*total/100), 1)).replace(".0", ""), fontsize=FONT_SIZE_TICKS, color='dimgrey')
 
-	ax.invert_yaxis() 
+	ax.invert_yaxis()
 	plt.tight_layout()
 
 
@@ -223,8 +225,8 @@ def return_color_album_dict(albums_list):
 
 def returnRadioheadAlbumDict(color_album_dict):
 	color_album_dict["Pablo Honey"] = '#E8E288' # yellow
-	color_album_dict["The Bends"] = '#C69F89' #brown 
-	color_album_dict["Amnesiac"] = '#FF8360' #oragnish 
+	color_album_dict["The Bends"] = '#C69F89' #brown
+	color_album_dict["Amnesiac"] = '#FF8360' #oragnish
 	color_album_dict["OK Computer"] = '#58A4B0' #bluish
 	color_album_dict["Kid A"] = '#93032E' # light red
 	color_album_dict["Hail to the Thief"] = '#0C7C59' # green
