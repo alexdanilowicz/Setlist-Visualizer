@@ -30,14 +30,28 @@ At the top of the script, simply change:
 
 ### To install:
 
-#### Dependencies
-```
-1. BeautifulSoup
-2. requests
-3. pandas
-4. pathlib
-5. matplotlib
-```
+Run in toplevel of project (in internal tools folder):
+
+`mkdir p3_env`
+
+`python3 -m venv p3_env`
+
+to set up the enviroment.
+
+
+### Already see the bin folder? Then:
+
+Run:
+
+`source p3_env/bin/activate`
+
+Then, to install dependencies, run:
+
+`pip3 install -r requirements.txt`
+
+Then, to run the file:
+
+`python3 [filename].py`
 
 ### Acknowledgements:
 
