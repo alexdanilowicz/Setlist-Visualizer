@@ -22,21 +22,22 @@ from collections import defaultdict
 from pathlib import Path # optional, only if you don't want to scrape everytime you mess around with graph
 
 # THINGS YOU MUST CHANGE
-ARTIST = "Radiohead"
-UNIQUE = "radiohead-bd6bd12.html"
-URL_TO_STOP_AT = "united-center-chicago-il-7bea6a40.html" # Note: get rid of HTTPS part
+ARTIST = "National"
+UNIQUE = "the-national-53d69b79.html"
+URL_TO_STOP_AT = "/cafe-de-la-danse-paris-france-1b931138" # Note: get rid of HTTPS part
 URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing
 
 # OPTIONAL THINGS TO CHANGE
-YEAR = "2018"
+CUSTOM = True
+YEAR = "2019"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
-TITLE = "Frequency of Songs during " + ARTIST + "'s Tour"
+TITLE = "Frequency of Songs during The National's "
 SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"]
-MAX_PAGES = 100 # max to scrape, not even close to used if URL_TO_STOP set properly
+MAX_PAGES = 8 # max to scrape, not even close to used if URL_TO_STOP set properly
 FONT_SIZE_TICKS = 3
 FONT_Y = 5 # for labels
-OPTIONAL_TITLE_ADDITIONAL = ", North America " + YEAR
+OPTIONAL_TITLE_ADDITIONAL = "I Am Easy to Find Tour, " + YEAR
 TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
 color_album_dict = {}
 
@@ -108,8 +109,8 @@ def scrape():
 							thealbum = thealbum.strip("'")
 							thealbum = thealbum.rstrip()
 							# harcoded but you could just see if the key is in th
-							if thealbum not in returnRadioheadAlbumDict(color_album_dict):
-								thealbum = "Other"
+							# if thealbum not in returnCustomAlbumDict(color_album_dict):
+							# 	thealbum = "Other"
 							visited[str(song)] = thealbum
 							break
 						if album.text == "From the release": # album name falls under this span
@@ -208,8 +209,8 @@ def return_color_album_dict(albums_list):
 
 	# HERE YOU CAN SPECIFY ALBUM COLORS SO THEY FIT YOUR ARTIST's ALBUM ARTWORK
 	# Make sure you catch everything, or it will not map properly
-	if ARTIST == "Radiohead":
-		color_album_dict = returnRadioheadAlbumDict(color_album_dict)
+	if CUSTOM:
+		color_album_dict = returnCustomAlbumDict(color_album_dict)
 
 	else: # otherwise, just get random ugly hex colors
 		number_of_colors = len(albums_list)
@@ -223,17 +224,15 @@ def return_color_album_dict(albums_list):
 
 	return color_album_dict
 
-def returnRadioheadAlbumDict(color_album_dict):
-	color_album_dict["Pablo Honey"] = '#E8E288' # yellow
-	color_album_dict["The Bends"] = '#C69F89' #brown
-	color_album_dict["Amnesiac"] = '#FF8360' #oragnish
-	color_album_dict["OK Computer"] = '#58A4B0' #bluish
-	color_album_dict["Kid A"] = '#93032E' # light red
-	color_album_dict["Hail to the Thief"] = '#0C7C59' # green
-	color_album_dict["In Rainbows"] = '#D72638' #dark red
-	color_album_dict["The King of Limbs"] = '#A23B72' # purplish
-	color_album_dict["A Moon Shaped Pool"] = '#2B303A' # blackish
-	color_album_dict["Other"] = '#BAC1B8' # white
+def returnCustomAlbumDict(color_album_dict):
+	color_album_dict["The Virginia"] = '#E8E288' # yellow
+	color_album_dict["Boxer"] = '#FF8360' #oragnish
+	color_album_dict["Trouble Will Find Me"] = '#000000' #black
+	color_album_dict["Alligator"] = '#0C7C59' # green
+	color_album_dict["Cherry Tree"] = '#D72638' #dark red
+	color_album_dict["High Violet"] = '#A23B72' # purplish
+	color_album_dict["Sleep Well Beast"] = '#999494' # grey
+	color_album_dict["I Am Easy to Find"] = '#04488c' # dark blue
 	return color_album_dict
 
 if __name__ == "__main__":
