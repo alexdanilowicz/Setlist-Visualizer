@@ -22,9 +22,9 @@ from collections import defaultdict
 from pathlib import Path # optional, only if you don't want to scrape everytime you mess around with graph
 
 # THINGS YOU MUST CHANGE
-ARTIST = "National"
-UNIQUE = "the-national-53d69b79.html"
-URL_TO_STOP_AT = "/cafe-de-la-danse-paris-france-1b931138" # Note: get rid of HTTPS part
+ARTIST = "Thom Yorke"
+UNIQUE = "thom-yorke-2bd69012.html" # MAKE SURE TO INCLUDE .html part
+URL_TO_STOP_AT = "/palladium-cologne-germany-539157c1" # Note: get rid of HTTPS part
 URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing
 
 # OPTIONAL THINGS TO CHANGE
@@ -32,12 +32,12 @@ CUSTOM = True
 YEAR = "2019"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
-TITLE = "Frequency of Songs during The National's "
+TITLE = "Frequency of Songs during Andy B's "
 SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"]
 MAX_PAGES = 8 # max to scrape, not even close to used if URL_TO_STOP set properly
 FONT_SIZE_TICKS = 3
 FONT_Y = 5 # for labels
-OPTIONAL_TITLE_ADDITIONAL = "I Am Easy to Find Tour, " + YEAR
+OPTIONAL_TITLE_ADDITIONAL = "Latest Tour"
 TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
 color_album_dict = {}
 
@@ -121,7 +121,7 @@ def scrape():
 				try:
 					dm.append([date, song, thealbum])
 				except:
-					print("skipping over this song because setlist data populated yet")
+					print("skipping over this song")
 
 		df = pd.DataFrame(dm, columns=['Date', 'Track', 'Album'])
 
@@ -237,4 +237,4 @@ def returnCustomAlbumDict(color_album_dict):
 
 if __name__ == "__main__":
 	scrape()
-	visualize_album()
+	#visualize_album()
