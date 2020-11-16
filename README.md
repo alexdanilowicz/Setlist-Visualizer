@@ -1,8 +1,14 @@
 # ![logo](./img/bear.JPG) Setlist Visualizer
 
-Python script which scrapes setlistfm website for data relating to any band you specify. Then, using pandas and matplotlib, it turns it the frequency of the songs they play into a pretty graph.
+## NOTE:
 
-Could be applied to any band, tour/year, just need to change 3 constants at top of script.
+This was one my first personal projects. It got some attention on Reddit, so leaving it as is. There's a lot of cool functionality here that could be improved upon.
+
+## Summary
+
+Python script that scrapes setlistfm for any band you want. Turns the frequency of the songs they play into a pretty graph.
+
+Can be used with any band and date range. You only need to change 3 constants at top of script.
 
 ![graph](./img/example.jpeg)
 
@@ -10,18 +16,16 @@ Could be applied to any band, tour/year, just need to change 3 constants at top 
 
 `python3 visualizeSongs.py`
 
-### Choose your band:
+### Usage:
 
-Originally, used to scrape Radiohead data (because they are the greatest band of all time). Now, script can be used for any band.
-
-At the top of the script, simply change:
+At the top of the script, change:
 
 1. ARTIST
-	- this is used for titles
+	- note: this is used for titles
 
 2. UNIQUE
 	- the unique setlistfm string
-	- Example: "interpol-2bd6982e.html", which is from: [https://www.setlist.fm/setlists/interpol-2bd6982e.html](https://www.setlist.fm/setlists/interpol-2bd6982e.html)
+	- Example: "interpol-2bd6982e.html", which is taken from the URL: [https://www.setlist.fm/setlists/interpol-2bd6982e.html](https://www.setlist.fm/setlists/interpol-2bd6982e.html)
 
 3. URL\_TO\_STOP_AT
  - the concert you want to stop at
@@ -30,7 +34,7 @@ At the top of the script, simply change:
 
 ### To install:
 
-Run in toplevel of project (in internal tools folder):
+Run in root of the project:
 
 `mkdir p3_env`
 
