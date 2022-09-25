@@ -70,3 +70,7 @@ Author of original setlist.fm scraping: the talented **Ryan Lee Watts**
 Github: https://github.com/ryanleewatts
 
 Script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/SetlistScript.py
+
+## Support
+
+<a href="https://www.buymeacoffee.com/leftonread" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
