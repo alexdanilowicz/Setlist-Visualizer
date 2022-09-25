@@ -7,8 +7,9 @@
 #
 # Author: Alex Danilowicz
 # 	Wrote for fun as a summer personal project.
-#	Need to clean up, rename, and refactor.
 #	Started as just a way to see what Radiohead songs would be played...
+#
+# First run it with scrape(), then once the file is created, run it with visualize()
 
 from bs4 import BeautifulSoup as bs
 import requests
@@ -19,29 +20,32 @@ import matplotlib.ticker as mtick
 import numpy as np
 import random
 from collections import defaultdict
-from pathlib import Path # optional, only if you don't want to scrape everytime you mess around with graph
+from pathlib import Path
 
 # THINGS YOU MUST CHANGE
-ARTIST = "Thom Yorke"
-UNIQUE = "thom-yorke-2bd69012.html" # MAKE SURE TO INCLUDE .html part
-URL_TO_STOP_AT = "/palladium-cologne-germany-539157c1" # Note: get rid of HTTPS part
-URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing
+ARTIST = "The National"
+UNIQUE = "the-national-53d69b79.html" # MAKE SURE TO INCLUDE .html part
+
+
+URL_TO_STOP_AT = "/baluarte-pamplona-spain-33b4b0a9.html" # Note: get rid of HTTPS part
+URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing or html
+CUSTOM = True # if true, be sure to define returnCustomAlbumDict
 
 # OPTIONAL THINGS TO CHANGE
-CUSTOM = True
-YEAR = "2019"
+YEAR = "2022"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
-TITLE = "Frequency of Songs during Andy B's "
-SONGS_TO_IGNORE = ["I Wish I Knew How It Would Feel to Be Free", "Egyptian Fantasy"]
-MAX_PAGES = 8 # max to scrape, not even close to used if URL_TO_STOP set properly
-FONT_SIZE_TICKS = 3
-FONT_Y = 5 # for labels
-OPTIONAL_TITLE_ADDITIONAL = "Latest Tour"
-TITLE = TITLE + OPTIONAL_TITLE_ADDITIONAL
+TITLE = "The National's Summer Tour "
+SONGS_TO_IGNORE = ["I Can't Forget"]
+MAX_PAGES = 10000 # max to scrape, not used if URL_TO_STOP set properly
+FONT_SIZE_TICKS = 4
+FONT_Y = 10 # for labels
 color_album_dict = {}
 
 def scrape():
+	if ('.html' not in UNIQUE):
+		raise Exception("You must add .html to the unique var otherwise you will stuck in an infinite loop")
+
 	UNIQUE_URL = "https://www.setlist.fm/setlists/" + UNIQUE + "?page="
 	SONG_URL = "https://www.setlist.fm/stats/songs/" + UNIQUE + "?song="  # notice difference: /stats/
 	visited = {} # key song, album is value
@@ -55,16 +59,21 @@ def scrape():
 			if break_bool:
 				break
 			url = UNIQUE_URL + str(i + 1)
+			print('🎉 Page ', url)
 			r = requests.get(url)
 			soup = bs(r.content, "lxml")
+			#print('🍲 Soup', soup)
 			for link in soup.find_all('a', class_='summary url'):
 				setlist = (link.get('href'))
 				completeurl = 'http://www.setlists.fm' + setlist[2:]
 				if URL_TO_START_AT in completeurl:
 					start = True
 				if start:
-					print("Getting url: " + completeurl) # print the output
-					links.append(completeurl)
+					print("Considering url: ", completeurl)
+					if completeurl not in links:
+						if "/setlist/the-national/2022" in completeurl:
+							print("ℹ️ Getting url: " + completeurl) # print the output
+							links.append(completeurl)
 				# stop at this url
 				if URL_TO_STOP_AT in completeurl:
 					break_bool = True
@@ -72,6 +81,7 @@ def scrape():
 
 		# Scrape every url in that list
 		for item in links:
+			print('🎹 Looking at setlist for: ', item)
 			# 1. Scrape the date
 			r = requests.get(item)
 			soup = bs(r.content, "lxml")
@@ -92,7 +102,8 @@ def scrape():
 
 			#3. Scrape the album
 			for song in songs:
-				if song not in visited:
+				if str(song) not in visited:
+					print('Getting the song 🎵', song)
 					# hardcoded this one for Radiohead cause url format is wonky, can fix later
 					if "2 + 2 = 5" in song:
 						r = requests.get("https://www.setlist.fm/stats/songs/radiohead-bd6bd12.html?song=" + "2+%2B+2+%3D+5")
@@ -111,7 +122,14 @@ def scrape():
 							# harcoded but you could just see if the key is in th
 							# if thealbum not in returnCustomAlbumDict(color_album_dict):
 							# 	thealbum = "Other"
-							visited[str(song)] = thealbum
+							if (str(song) == "This Isn't Helping"):
+								visited[str(song)] = "New Album"
+							if (str(song) == "Moon Drop Light"):
+								visited[str(song)] = "New Album"
+							if (str(song) == "Tropic Morning News (Haversham)"):
+								visited[str(song)] = "New Album"							
+							else:
+								visited[str(song)] = thealbum
 							break
 						if album.text == "From the release": # album name falls under this span
 							thenext = True
@@ -126,7 +144,8 @@ def scrape():
 		df = pd.DataFrame(dm, columns=['Date', 'Track', 'Album'])
 
 		df.to_excel(FILE, index=False)
-
+	else:
+		visualize_album()
 def return_original_df():
 	return pd.read_excel(FILE, sheet_name="Sheet1")
 
@@ -140,10 +159,8 @@ def create_clean_df():
 	albums = df[['Track', 'Album']]
 	# put track as index, date in row
 	unique_df = df.groupby(df['Track']).nunique() # get count
-
 	# clean up and rename
-	del unique_df["Album"]
-	del unique_df["Track"]
+	del unique_df['Album']
 	unique_df = unique_df.rename(columns={'Date': 'Count_Played'})
 
 	# merge with albums df, I assume there's a better way...
@@ -170,7 +187,13 @@ def visualize_album():
 	# convert to percentages
 	unique_df['Frequency'] = unique_df['Count_Played'].div(total).multiply(100)
 
-	ax = unique_df.drop(['Count_Played'], axis=1).plot(kind='barh', legend=True, color=[unique_df.Album.map(color_album_dict)])
+	c = []
+	l = unique_df['Album'].tolist()
+	for val in l:
+		c.append(color_album_dict[val])
+	# https://github.com/pandas-dev/pandas/issues/16822#issuecomment-1257284602
+	ax = unique_df.plot.barh(y='Frequency', color=c)
+
 
 	format(ax, color_album_dict, total, unique_df)
 
@@ -183,7 +206,7 @@ def format(ax, color_dict, total, df):
 	plt.legend(markers, color_dict.keys(), numpoints=1, fontsize='7')
 
 	# formatting labels
-	ax.set_xlabel("Frequency" + " (n=" + str(total) + " concerts)")
+	ax.set_xlabel("Frequency" + " (" + str(total) + " concerts)")
 	fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
 	xticks = mtick.FormatStrFormatter(fmt)
 	ax.xaxis.set_major_formatter(xticks)
@@ -225,16 +248,16 @@ def return_color_album_dict(albums_list):
 	return color_album_dict
 
 def returnCustomAlbumDict(color_album_dict):
-	color_album_dict["The Virginia"] = '#E8E288' # yellow
-	color_album_dict["Boxer"] = '#FF8360' #oragnish
-	color_album_dict["Trouble Will Find Me"] = '#000000' #black
-	color_album_dict["Alligator"] = '#0C7C59' # green
-	color_album_dict["Cherry Tree"] = '#D72638' #dark red
-	color_album_dict["High Violet"] = '#A23B72' # purplish
-	color_album_dict["Sleep Well Beast"] = '#999494' # grey
-	color_album_dict["I Am Easy to Find"] = '#04488c' # dark blue
+	color_album_dict["Boxer"] = '#79B791' #lime green
+	color_album_dict["Trouble Will Find Me"] = '#96C9DC' #sky blue
+	color_album_dict["Alligator"] = '#F06C9B' # dark pink
+	color_album_dict["Cherry Tree"] = '#F5D491' # yellow
+	color_album_dict["High Violet"] = '#666A86' # purplish
+	color_album_dict["Sleep Well Beast"] = '#333333' # grey
+	color_album_dict["I Am Easy to Find"] = '#61A0AF' # dark blue
+	color_album_dict["New Album"] = '#E6AA9F' # pink
+
 	return color_album_dict
 
 if __name__ == "__main__":
 	scrape()
-	#visualize_album()

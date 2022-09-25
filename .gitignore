@@ -1,0 +1,9 @@
+**p3_env
+
+.env
+
+.DS_Store
+
+*.png
+
+*.xlsx
