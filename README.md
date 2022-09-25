@@ -1,6 +1,10 @@
 # ![logo](./img/bear.JPG) Setlist Visualizer
 
-This was one my first personal projects. It got some attention on Reddit, so leaving it as is. There's a lot of cool functionality here that could be improved upon. I'd like to make a web app.
+This was one my first personal projects. There's a lot of cool functionality here that could be improved upon. I'd like to make a web app. I come back to it about every few years after my favorite artists go on tour.
+
+## Support
+
+<a href="https://www.buymeacoffee.com/leftonread" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Summary
 
@@ -70,7 +74,3 @@ Author of original setlist.fm scraping: the talented **Ryan Lee Watts**
 Github: https://github.com/ryanleewatts
 
 Script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/SetlistScript.py
-
-## Support
-
-<a href="https://www.buymeacoffee.com/leftonread" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
