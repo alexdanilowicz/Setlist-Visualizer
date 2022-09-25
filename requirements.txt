@@ -9,7 +9,7 @@ fonttools==4.37.3
 idna==2.8
 jdcal==1.4.1
 kiwisolver==1.1.0
-lxml==4.4.1
+lxml==4.9.1
 matplotlib==3.6.0
 numpy==1.23.3
 openpyxl==3.0.7
