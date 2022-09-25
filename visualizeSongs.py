@@ -35,10 +35,10 @@ CUSTOM = True # if true, be sure to define returnCustomAlbumDict
 YEAR = "2022"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
-TITLE = "The National's Summer Tour "
+TITLE = "The National's 2022 Summer Tour "
 SONGS_TO_IGNORE = ["I Can't Forget"]
 MAX_PAGES = 10000 # max to scrape, not used if URL_TO_STOP set properly
-FONT_SIZE_TICKS = 4
+FONT_SIZE_TICKS = 8
 FONT_Y = 10 # for labels
 color_album_dict = {}
 
@@ -201,22 +201,30 @@ def visualize_album():
 	plt.show()
 
 def format(ax, color_dict, total, df):
+	plt.rcParams["font.family"] = "Helvetica"
+	hfont = {'fontname':'Helvetica'}
+
 	# The following two lines generate custom fake lines that will be used as legend entries:
 	markers = [plt.Line2D([0,0],[0,0],color=color, marker='o', linestyle='') for color in color_dict.values()]
 	plt.legend(markers, color_dict.keys(), numpoints=1, fontsize='7')
 
 	# formatting labels
-	ax.set_xlabel("Frequency" + " (" + str(total) + " concerts)")
+	ax.set_xlabel("Frequency" + " (" + str(total) + " concerts)", **hfont)
 	fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
 	xticks = mtick.FormatStrFormatter(fmt)
 	ax.xaxis.set_major_formatter(xticks)
 
-	ax.set_ylabel("Track (Count: " + str(len(df.index)) + ")")
-	plt.yticks(fontsize=FONT_Y)
-	plt.title(TITLE, fontsize=10)
+	plt.xticks(fontname='Helvetica')
+
+
+	ax.set_ylabel("Track (" + str(len(df.index)) + ")", **hfont)
+	plt.yticks(fontsize=FONT_Y, fontname='Helvetica')
+	plt.title(TITLE, fontsize=16, **hfont)
+	plt.figtext(0.5, 0.01, 'Created by github.com/alexdanilowicz/Setlist-Visualizer', wrap=True, horizontalalignment='center', fontsize=7, **hfont)
+
 
 	for i in ax.patches:
-		ax.text(i.get_width()+.3, i.get_y()+.38, str(round((i.get_width()*total/100), 1)).replace(".0", ""), fontsize=FONT_SIZE_TICKS, color='dimgrey')
+		ax.text(i.get_width()+.3, i.get_y()+.38, str(round((i.get_width()*total/100), 1)).replace(".0", ""), fontsize=FONT_SIZE_TICKS, color='dimgrey', **hfont)
 
 	ax.invert_yaxis()
 	plt.tight_layout()
