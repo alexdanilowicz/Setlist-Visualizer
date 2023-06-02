@@ -24,18 +24,17 @@ from pathlib import Path
 
 # THINGS YOU MUST CHANGE
 ARTIST = "The National"
-UNIQUE = "the-national-53d69b79.html" # MAKE SURE TO INCLUDE .html part
-
-
-URL_TO_STOP_AT = "/baluarte-pamplona-spain-33b4b0a9.html" # Note: get rid of HTTPS part
+UNIQUE = "the-national-53d69b79.html" # MAKE SURE TO INCLUDE .html part. This is unique for the band
+URL_TO_STOP_AT = "/auditorium-theatre-chicago-il-53b9d7a9.html" # Note: get rid of HTTPS part
 URL_TO_START_AT = "html" # this url will be the first one to be scraped. If you want first one, put in nothing or html
 CUSTOM = True # if true, be sure to define returnCustomAlbumDict
+TOUR_DEFINITION = "/setlist/the-national/2023"
 
 # OPTIONAL THINGS TO CHANGE
-YEAR = "2022"
+YEAR = "2023"
 SORT_ALBUM = False # toggle if you want to sort by album or not. if false, sorts by count
 FILE = ARTIST + "-Data" + "-" + YEAR +".xlsx" # filename
-TITLE = "The National's 2022 Summer Tour "
+TITLE = "The National's 2023 Tour, so far... "
 SONGS_TO_IGNORE = ["I Can't Forget"]
 MAX_PAGES = 10000 # max to scrape, not used if URL_TO_STOP set properly
 FONT_SIZE_TICKS = 8
@@ -71,7 +70,7 @@ def scrape():
 				if start:
 					print("Considering url: ", completeurl)
 					if completeurl not in links:
-						if "/setlist/the-national/2022" in completeurl:
+						if TOUR_DEFINITION in completeurl:
 							print("ℹ️ Getting url: " + completeurl) # print the output
 							links.append(completeurl)
 				# stop at this url
@@ -122,12 +121,14 @@ def scrape():
 							# harcoded but you could just see if the key is in th
 							# if thealbum not in returnCustomAlbumDict(color_album_dict):
 							# 	thealbum = "Other"
-							if (str(song) == "This Isn't Helping"):
+							if (str(song) == "Deep End"):
 								visited[str(song)] = "New Album"
-							if (str(song) == "Moon Drop Light"):
+							if (str(song) == "Space Invader (Threaded Gold)"):
 								visited[str(song)] = "New Album"
-							if (str(song) == "Tropic Morning News (Haversham)"):
-								visited[str(song)] = "New Album"							
+							if (str(song) == "Coat on a Hook"):
+								visited[str(song)] = "New Album"	
+							if (str(song) == "Tour Manager"):
+								visited[str(song)] = "New Album"		
 							else:
 								visited[str(song)] = thealbum
 							break
@@ -209,7 +210,7 @@ def format(ax, color_dict, total, df):
 	plt.legend(markers, color_dict.keys(), numpoints=1, fontsize='7')
 
 	# formatting labels
-	ax.set_xlabel("Frequency" + " (" + str(total) + " concerts)", **hfont)
+	ax.set_xlabel("Frequency" + " (" + str(total) + " concerts total)", **hfont)
 	fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
 	xticks = mtick.FormatStrFormatter(fmt)
 	ax.xaxis.set_major_formatter(xticks)
@@ -263,7 +264,9 @@ def returnCustomAlbumDict(color_album_dict):
 	color_album_dict["High Violet"] = '#666A86' # purplish
 	color_album_dict["Sleep Well Beast"] = '#333333' # grey
 	color_album_dict["I Am Easy to Find"] = '#61A0AF' # dark blue
-	color_album_dict["New Album"] = '#E6AA9F' # pink
+	color_album_dict["First Two Pages of Frankenstein"] = '#D7C2D1' # pink
+	color_album_dict["New Album"] = '#FFA500' # orange
+	color_album_dict["Sad Songs for Dirty Lovers"] = '#880808' # red
 
 	return color_album_dict
 
