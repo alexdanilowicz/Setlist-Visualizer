@@ -5,7 +5,6 @@
 ### Introduction
 
 Python script that scrapes setlistfm for a given band and visualizes their setlists for a given tour.
-.
 
 _Setlist Visualizer is one of the first things I ever "programmed." There's cool functionality here that could be improved upon. I come back to it every few years after my favorite artists go on tour._
 
@@ -39,6 +38,4 @@ Script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/Setli
 
 ## Sponsored by
 
-Setlist Visualizer is proudly sponsored by [Mirrorful](https://www.mirrorful.com/), the source of truth for your team's design system.
-
-![Mirrorful](./img/mirrorfulLogo.png)
+Setlist Visualizer is proudly sponsored by [Magic Patterns](https://www.magicpatterns.com/). Generate UI from any design system.
