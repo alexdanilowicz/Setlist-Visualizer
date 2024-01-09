@@ -5,7 +5,7 @@ chardet==3.0.4
 contourpy==1.0.5
 cycler==0.10.0
 et-xmlfile==1.0.1
-fonttools==4.37.3
+fonttools==4.43.0
 idna==2.8
 jdcal==1.4.1
 kiwisolver==1.1.0
