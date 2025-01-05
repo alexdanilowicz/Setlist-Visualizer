@@ -38,4 +38,4 @@ Script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/Setli
 
 ## Sponsored by
 
-Setlist Visualizer is proudly sponsored by [Magic Patterns](https://www.magicpatterns.com/). Generate UI from any design system.
+Setlist Visualizer is proudly sponsored by [Magic Patterns](https://www.magicpatterns.com/).
