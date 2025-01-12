@@ -5,7 +5,6 @@
 ### Introduction
 
 Python script that scrapes setlistfm for a given band and visualizes their setlists for a given tour.
-.
 
 _Setlist Visualizer is one of the first things I ever "programmed." There's cool functionality here that could be improved upon. I come back to it every few years after my favorite artists go on tour._
 
