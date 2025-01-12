@@ -39,6 +39,4 @@ Script: https://github.com/ryanleewatts/coding-project/blob/master/scraper/Setli
 
 ## Sponsored by
 
-Setlist Visualizer is proudly sponsored by [Mirrorful](https://www.mirrorful.com/), the source of truth for your team's design system.
-
-![Mirrorful](./img/mirrorfulLogo.png)
+Setlist Visualizer is proudly sponsored by [Magic Patterns](https://www.magicpatterns.com/), an AI design tool.
